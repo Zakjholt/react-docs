@@ -196,7 +196,7 @@ To set up a build step script to extract the correct schema information for your
 ```
 
 Then, in your Apollo Client setup file, import that json file and use it to create your fragment matcher:
-```javascript
+```js
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
 import { IntrospectionFragmentMatcher } from 'react-apollo
 import fragmentSchema from '<PATH_TO_WHERE_YOU_WANT_YOUR_FRAGMENT_SCHEMA>.json'
