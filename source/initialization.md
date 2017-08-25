@@ -186,7 +186,7 @@ If there are any changes related to union or interface types in your schema, you
 
 (note: if anyone has set up a build step already, please consider making a PR to the docs here to share your instructions with the rest of the community!)
 
-To set up a build step script to extract the correct schema information for your fragment matcher, I recommend using a curl simple request:
+To set up a build step script to extract the correct schema information for your fragment matcher, I recommend using a simple curl request:
 ```json
 {
   "scripts": {
