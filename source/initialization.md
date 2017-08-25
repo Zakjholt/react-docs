@@ -185,3 +185,32 @@ const client = new ApolloClient({
 If there are any changes related to union or interface types in your schema, you will have to update the fragment matcher accordingly. To keep this information automatically updated, we recommend setting up a build step that extracts the necessary information from the schema, and includes it as a JSON file in the client bundle, where it can be imported from when constructing the fragment matcher.
 
 (note: if anyone has set up a build step already, please consider making a PR to the docs here to share your instructions with the rest of the community!)
+
+To set up a build step script to extract the correct schema information for your fragment matcher, I recommend using a curl simple request:
+```json
+{
+  "scripts": {
+    "build": "curl -X POST http://<YOUR_GRAPHQL_ADDRESS> -o <PATH_TO_WHERE_YOU_WANT_YOUR_FRAGMENT_SCHEMA>.json -H 'content-type: application/json'   -d '{ \"query\": \"{ __schema{ types{ kind name possibleTypes{name possibleTypes{name kind}}}}}\" }'",
+  }
+}
+```
+
+Then, in your Apollo Client setup file, import that json file and use it to create your fragment matcher:
+```javascript
+import ApolloClient, { createNetworkInterface } from 'apollo-client'
+import { IntrospectionFragmentMatcher } from 'react-apollo
+import fragmentSchema from '<PATH_TO_WHERE_YOU_WANT_YOUR_FRAGMENT_SCHEMA>.json'
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData: fragmentSchema.data
+})
+
+const createApolloClient = wsClient => {
+  return new ApolloClient({
+    networkInterface: createNetworkInterface({
+      uri: <GRAPHQL_ADDRESS>
+    }),
+    fragmentMatcher
+  })
+}
+```
